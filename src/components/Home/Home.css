@@ -1,0 +1,87 @@
+ /* Home.css */
+.home-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .home-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .home-header h1 {
+    font-size: 24px;
+  }
+  
+  .home-header p {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .quick-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .action-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .action-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .transaction-summary {
+    margin-bottom: 30px;
+  }
+  
+  .transaction-summary table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .transaction-summary table, th, td {
+    border: 1px solid #ddd;
+  }
+  
+  .transaction-summary th, td {
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .transaction-summary th {
+    background-color: #f4f4f4;
+  }
+  
+  .budget-summary {
+    margin-top: 30px;
+  }
+  
+  .budget-chart {
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .logout-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .logout-btn:hover {
+    background-color: #ff1a1a;
+  }
+  

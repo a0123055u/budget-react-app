@@ -1,0 +1,88 @@
+/* Center the login box */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  /* Login box styling */
+  .login-box {
+    width: 350px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Input group styling */
+  .input-group {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  
+  .input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input {
+    width: 95%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  /* Error message styling */
+  .error {
+    color: red;
+    font-size: 14px;
+  }
+  
+  /* Button styling */
+  button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Login button */
+  .login-btn {
+    background: #007bff;
+    color: white;
+  }
+  
+  .login-btn:hover {
+    background: #0056b3;
+  }
+  
+  /* Sign Up and Forgot Password Buttons */
+  .extra-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .signup-btn, .forgot-btn {
+    width: 48%;
+    background: #28a745;
+    color: white;
+  }
+  
+  .signup-btn:hover {
+    background: #218838;
+  }
+  
+  .forgot-btn {
+    background: #dc3545;
+  }
+  
+  .forgot-btn:hover {
+    background: #c82333;
+  }
+  
