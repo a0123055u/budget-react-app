@@ -1,4 +1,4 @@
- /* Home.css */
+ /* Home.css
 .home-container {
     padding: 20px;
     font-family: Arial, sans-serif;
@@ -84,4 +84,122 @@
   .logout-btn:hover {
     background-color: #ff1a1a;
   }
-  
+
+
+   
+
+   */
+
+
+
+   /* Home container styling */
+.home-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Header styling */
+.home-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.home-header h1 {
+  font-size: 24px;
+}
+
+.home-header p {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Quick actions buttons */
+.quick-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: #45a049;
+}
+
+/* Transaction summary table */
+.transaction-summary {
+  margin-bottom: 30px;
+}
+
+.transaction-summary table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transaction-summary table, th, td {
+  border: 1px solid #ddd;
+}
+
+.transaction-summary th, td {
+  padding: 8px;
+  text-align: center;
+}
+
+.transaction-summary th {
+  background-color: #f4f4f4;
+}
+
+/* Budget summary */
+.budget-summary {
+  margin-top: 40px;  /* Increased margin for better spacing */
+}
+
+.budget-chart {
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* Logout button styling */
+.logout-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #ff1a1a;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .quick-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .action-btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .transaction-summary table th, .transaction-summary table td {
+    padding: 6px; /* Reduced padding for smaller screens */
+  }
+}

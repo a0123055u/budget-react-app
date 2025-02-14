@@ -1,0 +1,103 @@
+.income-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .income-form h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .income-form label {
+    display: block;
+    margin: 5px 0;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .income-form input,
+  .income-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .income-form input[type="number"] {
+    -moz-appearance: textfield; /* Hide spinner for number input */
+  }
+  
+  .income-form select:disabled {
+    background-color: #e0e0e0;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .form-actions button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 48%;
+  }
+  
+  .form-actions button[type="submit"] {
+    background: #4caf50;
+    color: white;
+    border: none;
+  }
+  
+  .form-actions button[type="button"] {
+    background: #f44336;
+    color: white;
+    border: none;
+  }
+  
+  .form-actions button:hover {
+    opacity: 0.9;
+  }
+  
+  .cancel-btn {
+    background: #f44336;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    opacity: 0.9;
+  }
+  
+  .form-actions button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+
+  /* Quick Actions buttons */
+.quick-actions .action-btn {
+  padding: 10px 20px;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Active tab styling */
+.quick-actions .action-btn.active {
+  background-color: #4caf50; /* Green for active tab */
+  color: white;
+  border-color: #4caf50;
+}
+

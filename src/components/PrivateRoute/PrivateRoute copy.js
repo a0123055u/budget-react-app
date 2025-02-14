@@ -9,23 +9,21 @@ const PrivateRoute = () => {
   const navigate = useNavigate(); // Use navigate for manual redirection
 
   useEffect(() => {
-    const checkTokenValidity = async () => {
-      if (!authToken) {
-        setIsValid(false);
-        return;
-      }
+    if (!authToken) {
+      setIsValid(false);
+      return;
+    }
 
+    const checkTokenValidity = async () => {
       try {
         const url = AUTH.INTROSPECT;
         const formData = new FormData();
         formData.append("token", authToken);
-
+    
         const response = await axios.post(url, formData);
 
         if (response.data && response.data.active) {
           localStorage.setItem("expires", response.data.exp);
-          localStorage.setItem("uuid", response.data.user_id);
-          localStorage.setItem("userName", response.data.username);
           console.log("✅ Token is valid");
           setIsValid(true);
         } else {
@@ -39,19 +37,18 @@ const PrivateRoute = () => {
     };
 
     checkTokenValidity();
-  }, [authToken]); // Dependency array to trigger when authToken changes
-
-  useEffect(() => {
-    if (isValid === false) {
-      console.log("🔄 Redirecting to Login");
-      navigate("/"); // Ensure immediate navigation after the state change
-    }
-  }, [isValid, navigate]); // Dependency array to trigger when isValid state changes
+  }, [authToken]);
 
   // Debugging logs
   console.log("🔍 PrivateRoute - isValid:", isValid);
 
   if (isValid === null) return <p>Loading...</p>;
+
+  if (!isValid) {
+    console.log("🔄 Redirecting to Login");
+    navigate("/"); // Ensure immediate navigation
+    return null; // Avoid rendering anything after navigation
+  }
 
   return <Outlet />;
 };

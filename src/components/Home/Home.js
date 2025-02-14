@@ -1,31 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import './Home.css'; // Custom styles for the home page
+import React, { useState, useEffect } from "react";
+import ExpenseForm from '../ExpenseForm/ExpenseForm';
+import IncomeForm from '../IncomeForm/IncomeForm'; // Import the IncomeForm component
+
+import "./Home.css";
 
 function Home() {
-  // Sample state for demonstration purposes
   const [balance, setBalance] = useState(0);
   const [recentTransactions, setRecentTransactions] = useState([]);
-  const [userName] = useState('John Doe');
+  const [userName] = useState(() => {
+    try {
+      return localStorage.getItem('userName') || 'Guest';
+    } catch (e) {
+      return 'Guest';
+    }
+  });
+  
+  const [showExpenseForm, setShowExpenseForm] = useState(false);
+  const [showIncomeForm, setShowIncomeForm] = useState(false); // Income form visibility state
 
-  // Simulate fetching balance and transactions
   useEffect(() => {
-    // For demonstration, using static data
-    setBalance(2000); // Example balance
+    setBalance(2000);
     setRecentTransactions([
-      { id: 1, description: 'Groceries', amount: -50, date: '2025-02-01' },
-      { id: 2, description: 'Salary', amount: 1500, date: '2025-02-01' },
-      { id: 3, description: 'Coffee', amount: -5, date: '2025-02-02' },
+      { id: 1, description: "Groceries", amount: -50, date: "2025-02-01" },
+      { id: 2, description: "Salary", amount: 1500, date: "2025-02-01" },
+      { id: 3, description: "Coffee", amount: -5, date: "2025-02-02" },
     ]);
   }, []);
 
-  // Logout function
   const handleLogout = () => {
-    // Clear localStorage
     localStorage.clear();
+    window.location.href = "/";
+  };
 
-    // Optionally, clear any session state or context if used
-    // Redirect to login page
-    window.location.href = '/'; // Replace with your login page URL
+  const handleExpenseFormToggle = () => {
+    setShowExpenseForm(true);
+    setShowIncomeForm(false); // Hide income form if expense form is shown
+  };
+
+  const handleIncomeFormToggle = () => {
+    setShowIncomeForm(true);
+    setShowExpenseForm(false); // Hide expense form if income form is shown
   };
 
   return (
@@ -36,10 +50,23 @@ function Home() {
       </div>
 
       <div className="quick-actions">
-        <button className="action-btn">Add Expense</button>
-        <button className="action-btn">Add Income</button>
+        <button
+          className={`action-btn ${showExpenseForm ? 'active' : ''}`} // Add active class to expense button
+          onClick={handleExpenseFormToggle}
+        >
+          Add Expense
+        </button>
+        <button
+          className={`action-btn ${showIncomeForm ? 'active' : ''}`} // Add active class to income button
+          onClick={handleIncomeFormToggle}
+        >
+          Add Income
+        </button>
         <button className="action-btn">View Transactions</button>
       </div>
+
+      {showExpenseForm && <ExpenseForm onClose={() => setShowExpenseForm(false)} />}
+      {showIncomeForm && <IncomeForm onClose={() => setShowIncomeForm(false)} />} {/* Show Income form if clicked */}
 
       <div className="transaction-summary">
         <h2>Recent Transactions</h2>
@@ -63,17 +90,6 @@ function Home() {
         </table>
       </div>
 
-      {/* Optionally, you could add a budget graph or summary */}
-      <div className="budget-summary">
-        <h2>Budget Overview</h2>
-        {/* Example graph could go here */}
-        <div className="budget-chart">
-          {/* Placeholder for future budget chart (using libraries like Chart.js or Recharts) */}
-          <p>Chart will go here (e.g., expense distribution by category)</p>
-        </div>
-      </div>
-
-      {/* Logout Button */}
       <div className="logout-section">
         <button onClick={handleLogout} className="logout-btn">Logout</button>
       </div>

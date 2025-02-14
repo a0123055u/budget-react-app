@@ -32,10 +32,7 @@ function Login() {
   formData.append("grant_type", "password");
   formData.append("username", email);
   formData.append("password", password);
-  formData.append("client_id", AUTH.SYS_CLIENT_ID);  // Replace with your actual client_id
-  formData.append("client_secret", AUTH.SYS_CLIENT_SECRET);
-
-
+  formData.append("client_id", AUTH.APP_CLIENT_ID);  // Replace with your actual client_id
     // Optionally, you can pass a token if required
     // const token = "YOUR_ACCESS_TOKEN"; // Replace with your actual token if needed
 

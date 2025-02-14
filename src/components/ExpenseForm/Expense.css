@@ -1,0 +1,84 @@
+.expense-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .expense-form h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .expense-form label {
+    display: block;
+    margin: 5px 0;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .expense-form input,
+  .expense-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .expense-form input[type="number"] {
+    -moz-appearance: textfield; /* Hide spinner for number input */
+  }
+  
+  .expense-form select:disabled {
+    background-color: #e0e0e0;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .form-actions button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 48%;
+  }
+  
+  .form-actions button[type="submit"] {
+    background: #4caf50;
+    color: white;
+    border: none;
+  }
+  
+  .form-actions button[type="button"] {
+    background: #f44336;
+    color: white;
+    border: none;
+  }
+  
+  .form-actions button:hover {
+    opacity: 0.9;
+  }
+  
+  .cancel-btn {
+    background: #f44336;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    opacity: 0.9;
+  }
+  
+  .form-actions button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
