@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
 import ExpenseForm from '../ExpenseForm/ExpenseForm';
-import IncomeForm from '../IncomeForm/IncomeForm'; // Import the IncomeForm component
-
+import IncomeForm from '../IncomeForm/IncomeForm';
+import TransactionForm from '../TransactionForm/TransactionForm'; // Ensure correct import
 import "./Home.css";
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
 function Home() {
   const [balance, setBalance] = useState(0);
-  const [recentTransactions, setRecentTransactions] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showExpenseForm, setShowExpenseForm] = useState(false);
+  const [showIncomeForm, setShowIncomeForm] = useState(false);
+  const [showTransactionForm, setShowTransactionForm] = useState(false);
+
+  const token = localStorage.getItem("authToken");
   const [userName] = useState(() => {
     try {
       return localStorage.getItem('userName') || 'Guest';
@@ -14,18 +22,39 @@ function Home() {
       return 'Guest';
     }
   });
-  
-  const [showExpenseForm, setShowExpenseForm] = useState(false);
-  const [showIncomeForm, setShowIncomeForm] = useState(false); // Income form visibility state
 
   useEffect(() => {
-    setBalance(2000);
-    setRecentTransactions([
-      { id: 1, description: "Groceries", amount: -50, date: "2025-02-01" },
-      { id: 2, description: "Salary", amount: 1500, date: "2025-02-01" },
-      { id: 3, description: "Coffee", amount: -5, date: "2025-02-02" },
-    ]);
-  }, []);
+    fetch("http://localhost:8000/budget/api/v1/balance/", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        console.log("Fetched transactions:", data.last_five_transaction);
+        console.log("Type before parsing:", typeof data.last_five_transaction);
+
+        let transactionsArray = [];
+        try {
+            transactionsArray = JSON.parse(data.last_five_transaction);
+        } catch (error) {
+            console.error("Error parsing transactions:", error);
+        }
+
+        console.log("Type after parsing:", typeof transactionsArray);
+        console.log("Is Array:", Array.isArray(transactionsArray));
+
+        setBalance(data.balance);
+        setTransactions(Array.isArray(transactionsArray) ? transactionsArray : []);
+        setLoading(false); // Set loading to false after data is fetched
+    })
+    .catch((err) => {
+        console.error("Error fetching transactions:", err);
+        setLoading(false); // Set loading to false in case of error
+    });
+}, [token]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -34,61 +63,69 @@ function Home() {
 
   const handleExpenseFormToggle = () => {
     setShowExpenseForm(true);
-    setShowIncomeForm(false); // Hide income form if expense form is shown
+    setShowIncomeForm(false);
+    setShowTransactionForm(false);
   };
 
   const handleIncomeFormToggle = () => {
     setShowIncomeForm(true);
-    setShowExpenseForm(false); // Hide expense form if income form is shown
+    setShowExpenseForm(false);
+    setShowTransactionForm(false);
+  };
+
+  const handleTransactionFormToggle = () => {
+    setShowIncomeForm(false);
+    setShowExpenseForm(false);
+    setShowTransactionForm(true);
   };
 
   return (
     <div className="home-container">
       <div className="home-header">
         <h1>Welcome, {userName}!</h1>
-        <p>Your current balance is: ${balance}</p>
+        {loading ? <p>Loading...</p> : <p>Your current balance is: ${balance}</p>}
       </div>
 
       <div className="quick-actions">
-        <button
-          className={`action-btn ${showExpenseForm ? 'active' : ''}`} // Add active class to expense button
-          onClick={handleExpenseFormToggle}
-        >
+        <button className={`action-btn ${showExpenseForm ? 'active' : ''}`} onClick={handleExpenseFormToggle}>
           Add Expense
         </button>
-        <button
-          className={`action-btn ${showIncomeForm ? 'active' : ''}`} // Add active class to income button
-          onClick={handleIncomeFormToggle}
-        >
+        <button className={`action-btn ${showIncomeForm ? 'active' : ''}`} onClick={handleIncomeFormToggle}>
           Add Income
         </button>
-        <button className="action-btn">View Transactions</button>
+        <button className={`action-btn ${showTransactionForm ? 'active' : ''}`} onClick={handleTransactionFormToggle}>
+          View Transactions
+        </button>
       </div>
 
       {showExpenseForm && <ExpenseForm onClose={() => setShowExpenseForm(false)} />}
-      {showIncomeForm && <IncomeForm onClose={() => setShowIncomeForm(false)} />} {/* Show Income form if clicked */}
+      {showIncomeForm && <IncomeForm onClose={() => setShowIncomeForm(false)} />}
 
-      <div className="transaction-summary">
-        <h2>Recent Transactions</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Description</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recentTransactions.map((transaction) => (
-              <tr key={transaction.id}>
-                <td>{transaction.date}</td>
-                <td>{transaction.description}</td>
-                <td>{transaction.amount < 0 ? `-${Math.abs(transaction.amount)}` : transaction.amount}</td>
+      {!showTransactionForm && (
+        <div className="transaction-summary">
+          <h2>Recent Transactions</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Amount</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {transactions.map((transaction, index) => (
+                <tr key={index}>
+                  <td>{new Date(transaction.date).toLocaleDateString()}</td>
+                  <td>{transaction.description}</td>
+                  <td>{transaction.transaction_type === 'expense' ? `-${Math.abs(parseFloat(transaction.amount))}` : parseFloat(transaction.amount)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {showTransactionForm && <TransactionForm onClose={() => setShowTransactionForm(false)} />}
 
       <div className="logout-section">
         <button onClick={handleLogout} className="logout-btn">Logout</button>

@@ -10,7 +10,6 @@ function IncomeForm({ onClose }) {
     description: "",
     date: new Date().toISOString().split("T")[0], // Default to today
     transaction_type: "income", // Set to income
-    user: 100
   });
   const token = localStorage.getItem("authToken");
 

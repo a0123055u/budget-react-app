@@ -1,0 +1,82 @@
+/* Transaction Table Styling */
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.transaction-table th,
+.transaction-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.transaction-table th {
+    background-color: #f8f9fa; /* Light gray like Bootstrap */
+    font-weight: bold;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Inline Form Group Styling */
+.inline-form-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Label Styling */
+form label {
+    font-size: 1rem; /* Matches Bootstrap’s default font size */
+    font-weight: 600; /* Adds a little more emphasis to labels */
+    margin-bottom: 0.5rem; /* Adds spacing between label and input */
+}
+
+/* Select Input Styling */
+form select.form-control,
+form input.form-control {
+    padding: 0.375rem 0.75rem; /* Standard Bootstrap padding for form controls */
+    font-size: 1rem; /* Consistent with Bootstrap input size */
+    border-radius: 0.25rem; /* Bootstrap's default input border-radius */
+    border: 1px solid #ced4da; /* Border color similar to Bootstrap */
+}
+
+/* Submit Button Styling */
+form .btn {
+    padding: 0.375rem 0.75rem; /* Bootstrap’s standard button padding */
+    font-size: 1rem; /* Consistent with Bootstrap button font size */
+    border-radius: 0.25rem; /* Bootstrap’s default button border-radius */
+    border: none;
+    text-transform: uppercase; /* Matches the typical Bootstrap button style */
+}
+
+form .btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+}
+
+form .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    box-shadow: none; /* Removes the box-shadow for hover effect */
+}
+
+/* Disabled Button Styling */
+form .btn-primary:disabled {
+    background-color: #6c757d; /* Gray background for disabled state */
+    border-color: #6c757d; /* Gray border for disabled state */
+    cursor: not-allowed; /* Not-allowed cursor for disabled state */
+    opacity: 0.65; /* Reduced opacity for disabled state */
+}
+
+/* Table Header Customization */
+.transaction-table th {
+    background-color: #f1f1f1; /* Lighter background for header */
+}
+
+/* Input focus effect */
