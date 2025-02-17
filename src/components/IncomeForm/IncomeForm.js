@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Income.css";
+import { useAuth } from "../TokenService/TokenService"; // Import useAuth to get axiosInstance
 
 function IncomeForm({ onClose }) {
+  const { axiosInstance, authToken } = useAuth(); // Get axiosInstance and authToken from AuthContext
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     category: "",
@@ -11,23 +13,22 @@ function IncomeForm({ onClose }) {
     date: new Date().toISOString().split("T")[0], // Default to today
     transaction_type: "income", // Set to income
   });
-  const token = localStorage.getItem("authToken");
 
   useEffect(() => {
-    fetch("http://localhost:8000/budget/api/v1/income/expense/category/?category_type=income", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data);
-        console.log("Categories:", data);
+    // Fetch categories using axiosInstance
+    axiosInstance
+      .get("http://localhost:8000/budget/api/v1/income/expense/category/?category_type=income", {
+        headers: {
+          "Authorization": `Bearer ${authToken}`, // Use the authToken from context
+        },
       })
-      .catch((err) => console.error("Error fetching categories:", err));
-  }, [token]);
+      .then((response) => {
+        setCategories(response.data); // Update categories state with response data
+      })
+      .catch((err) => {
+        console.error("Error fetching categories:", err);
+      });
+  }, [authToken, axiosInstance]); // Use authToken and axiosInstance as dependencies
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,18 +47,21 @@ function IncomeForm({ onClose }) {
     e.preventDefault();
     console.log("Submitted Data:", formData);
 
-    // API call to save income transaction
-    fetch("http://localhost:8000/budget/api/v1/transaction/user/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Transaction saved:", data);
+    // API call to save income transaction using axiosInstance
+    axiosInstance
+      .post("http://localhost:8000/budget/api/v1/transaction/user/", formData, {
+        headers: {
+          "Authorization": `Bearer ${authToken}`, // Use the authToken from context
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("Transaction saved:", response.data);
         onClose(); // Close form after submission
       })
-      .catch((err) => console.error("Error saving transaction:", err));
+      .catch((err) => {
+        console.error("Error saving transaction:", err);
+      });
   };
 
   const selectedCategory = categories.find(
@@ -70,7 +74,7 @@ function IncomeForm({ onClose }) {
       <h2>Add Income</h2>
       <form onSubmit={handleSubmit}>
         <label>Category:</label>
-        <select
+        <select required
           name="category"
           value={formData.category}
           onChange={handleCategoryChange}
@@ -84,7 +88,7 @@ function IncomeForm({ onClose }) {
         </select>
 
         <label>Sub Category:</label>
-        <select
+        <select required
           name="sub_category"
           value={formData.sub_category}
           onChange={handleChange}
@@ -100,7 +104,6 @@ function IncomeForm({ onClose }) {
 
         <label>Amount:</label>
         <input
-        
           type="number"
           name="amount"
           value={formData.amount}

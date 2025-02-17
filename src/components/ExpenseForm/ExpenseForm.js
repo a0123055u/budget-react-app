@@ -10,7 +10,6 @@ function ExpenseForm({ onClose }) {
     description: "",
     date: new Date().toISOString().split("T")[0], // Default to today
     transaction_type: "expense",
-    user: 100
   });
   const token = localStorage.getItem("authToken");
 
@@ -77,7 +76,7 @@ function ExpenseForm({ onClose }) {
       <h2>Add Expense</h2>
       <form onSubmit={handleSubmit}>
         <label>Category:</label>
-        <select
+        <select required
           name="category"
           value={formData.category}
           onChange={handleCategoryChange}
@@ -93,7 +92,7 @@ function ExpenseForm({ onClose }) {
 
         <label>Sub Category:</label>
 
-        <select
+        <select required
           name="sub_category"
           value={formData.sub_category}
           onChange={handleChange}

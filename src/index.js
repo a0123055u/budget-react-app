@@ -4,14 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { TokenProvider } from './components/TokenService/TokenService';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
 root.render(
-  <React.StrictMode>
+  // double API is called due to React.StrictMode in development mode only.
+  // <React.StrictMode>
+    <TokenProvider>
     <App />
-  </React.StrictMode>
+    </TokenProvider>
+//  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

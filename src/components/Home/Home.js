@@ -4,8 +4,6 @@ import IncomeForm from '../IncomeForm/IncomeForm';
 import TransactionForm from '../TransactionForm/TransactionForm'; // Ensure correct import
 import "./Home.css";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
-
 function Home() {
   const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
@@ -22,6 +20,8 @@ function Home() {
       return 'Guest';
     }
   });
+
+  
 
   useEffect(() => {
     fetch("http://localhost:8000/budget/api/v1/balance/", {
@@ -101,7 +101,7 @@ function Home() {
       {showExpenseForm && <ExpenseForm onClose={() => setShowExpenseForm(false)} />}
       {showIncomeForm && <IncomeForm onClose={() => setShowIncomeForm(false)} />}
 
-      {!showTransactionForm && (
+      {!showTransactionForm && !showIncomeForm && !showExpenseForm&& (
         <div className="transaction-summary">
           <h2>Recent Transactions</h2>
           <table>

@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import './Transaction.css'; // Import the CSS file
+import { useAuth } from '../TokenService/TokenService';
 
-const TransactionForm = ({onClose}) => {
+const TransactionForm = ({ onClose }) => {
+    const { axiosInstance } = useAuth();
     const [period, setPeriod] = useState('');
     const [showDatePickers, setShowDatePickers] = useState(false);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [transactions, setTransactions] = useState([]); // State to store transactions
-    const [showTable, setShowTable] = useState(false); // State to control showing the table
+    const [transactions, setTransactions] = useState([]);
+    const [showTable, setShowTable] = useState(false);
     const [balance, setBalance] = useState(0);
-    const token = localStorage.getItem("authToken");
     const [loading, setLoading] = useState(true);
 
     const handlePeriodChange = (e) => {
@@ -17,62 +18,38 @@ const TransactionForm = ({onClose}) => {
         setShowDatePickers(e.target.value === 'custom');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        let url = "http://localhost:8000/budget/api/v1/balance/";
+        let url = 'http://localhost:8000/budget/api/v1/balance/';
 
-        // Modify the URL or add parameters based on the selected period
-        if (period === 'lastMonth') {
-            url += '?last_month=true';
-        } else if (period === 'last3Months') {
-            url += '?last_three_months=true';
-        } else if (period === 'last6Months') {
-            url += '?last_six_months=true';
-        } else if (period === 'lastYear') {
-            url += '?last_year=true';
-        } else if (period === 'custom') {
-            url += `?start_date=${startDate}&end_date=${endDate}`;
-        }
+        if (period === 'lastMonth') url += '?last_month=true';
+        else if (period === 'last3Months') url += '?last_three_months=true';
+        else if (period === 'last6Months') url += '?last_six_months=true';
+        else if (period === 'lastYear') url += '?last_year=true';
+        else if (period === 'custom') url += `?start_date=${startDate}&end_date=${endDate}`;
 
-        fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            console.log("Fetched transactions:", data.transaction);
-            console.log("Type before parsing:", typeof data.transaction);
-    
+        try {
+            const response = await axiosInstance.get(url);
+            console.log("Fetched transactions:", response.data.transaction);
+            
             let transactionsArray = [];
             try {
-                transactionsArray = JSON.parse(data.transaction);
+                transactionsArray = JSON.parse(response.data.transaction);
             } catch (error) {
                 console.error("Error parsing transactions:", error);
             }
-    
-            console.log("Type after parsing:", typeof transactionsArray);
-            console.log("Is Array:", Array.isArray(transactionsArray));
+
             setTransactions(Array.isArray(transactionsArray) ? transactionsArray : []);
-            setBalance(data.balance);
-            setLoading(false); // Set loading to false after data is fetched
-        })
-        .catch((err) => {
-            console.error("Error fetching transactions:", err);
-            setLoading(false); // Set loading to false in case of error
-        });
-
-        setShowTable(true); // Show table when form is submitted
-    };
-
-    const isSubmitDisabled = () => {
-        if (period === 'custom') {
-            return !startDate || !endDate;
+            setBalance(response.data.balance);
+        } catch (error) {
+            console.error("Error fetching transactions:", error);
+        } finally {
+            setLoading(false);
+            setShowTable(true);
         }
-        return period === '';
     };
+
+    const isSubmitDisabled = () => (period === 'custom' ? !startDate || !endDate : period === '');
 
     return (
         <form onSubmit={handleSubmit}>
@@ -88,44 +65,27 @@ const TransactionForm = ({onClose}) => {
                         <option value="custom">Custom</option>
                     </select>
                 </div>
-
                 {showDatePickers && (
                     <>
                         <div>
                             <label htmlFor="startDate">Start Date:</label>
-                            <input
-                                type="date"
-                                id="startDate"
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
-                                className="form-control"
-                            />
+                            <input type="date" id="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="form-control" />
                         </div>
                         <div>
                             <label htmlFor="endDate">End Date:</label>
-                            <input
-                                type="date"
-                                id="endDate"
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
-                                className="form-control"
-                            />
+                            <input type="date" id="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="form-control" />
                         </div>
                     </>
                 )}
-
                 <div>
                     <button type="submit" className="btn btn-primary" disabled={isSubmitDisabled()}>Submit</button>
-                    
                 </div>
-                <div><button type="button" onClick={onClose} className="cancel-btn">
-                    Cancel
-                    </button>
+                <div>
+                    <button type="button" onClick={onClose} className="cancel-btn">Cancel</button>
                 </div>
                 <div>Balance during the selected period: {balance ? balance : 0}</div>
             </div>
-
-            {showTable && transactions && (
+            {showTable && transactions.length > 0 && (
                 <table className="transaction-table mt-3">
                     <thead>
                         <tr>

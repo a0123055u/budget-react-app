@@ -5,6 +5,7 @@ import axios from "axios";
 // import Home from "../../Home/Home";
 import { useNavigate } from 'react-router-dom';
 
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,7 +50,8 @@ function Login() {
 
         // Handle response (e.g., save token, redirect, etc.)
         if (response.data.access_token) {
-          localStorage.setItem("authToken", response.data.access_token); // Store the token
+          localStorage.setItem("authToken", response.data.access_token);
+          localStorage.setItem("refreshToken", response.data.refresh_token) // Store the token
           // alert("Login successful!"); // Replace with actual redirect or UI change
           navigate('/home');
         } else {
