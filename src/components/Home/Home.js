@@ -3,6 +3,9 @@ import ExpenseForm from '../ExpenseForm/ExpenseForm';
 import IncomeForm from '../IncomeForm/IncomeForm';
 import TransactionForm from '../TransactionForm/TransactionForm'; // Ensure correct import
 import "./Home.css";
+import { AUTH } from "../../config/dev/Config";
+import axios from 'axios';
+
 
 function Home() {
   const [balance, setBalance] = useState(0);
@@ -56,10 +59,32 @@ function Home() {
     });
 }, [token]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = "/";
-  };
+const handleLogout = () => {
+  const token = localStorage.getItem('authToken');
+
+  if (!token) {
+      console.error("No auth token found");
+      return;
+  }
+
+  const formData = new URLSearchParams();
+  formData.append('token', token);
+  formData.append('client_id', AUTH.APP_CLIENT_ID);
+
+  axios.post('http://localhost:8000/o/revoke_token/', formData, {
+      headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+      }
+  })
+  .then((response) => {
+      console.log("Logout successful:", response.data);
+      localStorage.clear();
+      window.location.href = "/";
+  })
+  .catch((error) => {
+      console.error("Error logging out:", error);
+  });
+};
 
   const handleExpenseFormToggle = () => {
     setShowExpenseForm(true);

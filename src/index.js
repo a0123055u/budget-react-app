@@ -10,11 +10,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   // double API is called due to React.StrictMode in development mode only.
-  // <React.StrictMode>
+  <React.StrictMode>
     <TokenProvider>
     <App />
     </TokenProvider>
-//  </React.StrictMode>
+ </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
