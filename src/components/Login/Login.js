@@ -4,6 +4,7 @@ import { AUTH } from "../../config/dev/Config";
 import axios from "axios";
 // import Home from "../../Home/Home";
 import { useNavigate } from 'react-router-dom';
+// import Signup from "../Signup/Signup";
 
 
 function Login() {
@@ -90,7 +91,7 @@ function Login() {
         {error && <p className="error">{error}</p>}
         <button className="login-btn" onClick={handleLogin}>Login</button>
         <div className="extra-buttons">
-          <button className="signup-btn">Sign Up</button>
+        <button className="signup-btn" onClick={() => navigate('/signup')}>Sign Up</button>
           <button className="forgot-btn">Forgot Password?</button>
         </div>
       </div>
