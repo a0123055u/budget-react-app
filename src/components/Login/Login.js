@@ -92,7 +92,7 @@ function Login() {
         <button className="login-btn" onClick={handleLogin}>Login</button>
         <div className="extra-buttons">
         <button className="signup-btn" onClick={() => navigate('/signup')}>Sign Up</button>
-          <button className="forgot-btn">Forgot Password?</button>
+          <button className="forgot-btn" onClick={() => navigate('/forgotpassword')}>Forgot Password?</button>
         </div>
       </div>
     </div>
