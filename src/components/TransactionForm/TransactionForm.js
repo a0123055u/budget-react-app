@@ -20,7 +20,7 @@ const TransactionForm = ({ onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let url = 'http://localhost:8000/budget/api/v1/balance/';
+        let url = 'http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/budget/api/v1/balance/';
 
         if (period === 'lastMonth') url += '?last_month=true';
         else if (period === 'last3Months') url += '?last_three_months=true';

@@ -13,7 +13,7 @@ const ForgotPassword = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/budget/api/v1/forgot/password/user",
+        "http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/budget/api/v1/forgot/password/user",
         {
           method: "POST",
           body: formData,
