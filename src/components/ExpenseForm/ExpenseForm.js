@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Expense.css";
+import { useAuth } from "../TokenService/TokenService"; // Import useAuth to get axiosInstance
 
 function ExpenseForm({ onClose }) {
+  const { axiosInstance, authToken } = useAuth(); // Get axiosInstance and authToken from AuthContext
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     category: "",
@@ -9,63 +11,58 @@ function ExpenseForm({ onClose }) {
     amount: "",
     description: "",
     date: new Date().toISOString().split("T")[0], // Default to today
-    transaction_type: "expense",
+    transaction_type: "expense", // Set to expense
   });
-  const token = localStorage.getItem("authToken");
 
-  // Fetch categories and subcategories from a single API
+  // Fetch categories using axiosInstance
   useEffect(() => {
-    fetch("http://localhost:8000/budget/api/v1/income/expense/category/?category_type=expense", {
-      method: "GET", // or "POST", "PUT", "DELETE"
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Adding the auth token
-        // "Custom-Header": "customValue", // Any additional headers
-      },}) // Adjust API endpoint to match your actual one
-    // 
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data); // Set entire categories (including subcategories) into state
-        console.log("Data", data);
+    axiosInstance
+      .get("http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/budget/api/v1/income/expense/category/?category_type=expense", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
       })
-      .catch((err) => console.error("Error fetching categories:", err));
-  }, [token]);
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching categories:", err);
+      });
+  }, [authToken, axiosInstance]);
 
-  // Handle form input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle category change, to reset subcategory when category changes
   const handleCategoryChange = (e) => {
     const selectedCategory = e.target.value;
     setFormData({
       ...formData,
       category: selectedCategory,
-      sub_category: "", // Reset sub-category when category changes
+      sub_category: "", // Reset sub-category
     });
   };
 
-  // Submit form (call API to save transaction)
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitted Data:", formData);
 
-    // API call (optional)
-    fetch("http://localhost:8000/budget/api/v1/transaction/user/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" , "Authorization": `Bearer ${token}`},
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Transaction saved:", data);
-        onClose(); // Close form after submission
+    axiosInstance
+      .post("http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/budget/api/v1/transaction/user/", formData, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
       })
-      .catch((err) => console.error("Error saving transaction:", err));
+      .then((response) => {
+        console.log("Transaction saved:", response.data);
+        onClose();
+      })
+      .catch((err) => {
+        console.error("Error saving transaction:", err);
+      });
   };
 
-  // Get the subcategories for the selected category
   const selectedCategory = categories.find(
     (category) => category.id === parseInt(formData.category)
   );
@@ -76,28 +73,17 @@ function ExpenseForm({ onClose }) {
       <h2>Add Expense</h2>
       <form onSubmit={handleSubmit}>
         <label>Category:</label>
-        <select required
-          name="category"
-          value={formData.category}
-          onChange={handleCategoryChange}
-        >
+        <select required name="category" value={formData.category} onChange={handleCategoryChange}>
           <option value="">Select Category</option>
           {categories.map((cat) => (
             <option key={cat.id} value={cat.id}>
               {cat.category}
             </option>
           ))}
-          
         </select>
 
         <label>Sub Category:</label>
-
-        <select required
-          name="sub_category"
-          value={formData.sub_category}
-          onChange={handleChange}
-          disabled={!formData.category}
-        >
+        <select required name="sub_category" value={formData.sub_category} onChange={handleChange} disabled={!formData.category}>
           <option value="">Select Subcategory</option>
           {subCategories.map((sub) => (
             <option key={sub.id} value={sub.id}>
@@ -107,44 +93,16 @@ function ExpenseForm({ onClose }) {
         </select>
 
         <label>Amount:</label>
-        <input
-          type="number"
-          name="amount"
-          value={formData.amount}
-          onChange={handleChange}
-          required
-        />
+        <input type="number" name="amount" value={formData.amount} onChange={handleChange} required />
 
         <label>Description:</label>
-        <input
-          type="text"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
+        <input type="text" name="description" value={formData.description} onChange={handleChange} required />
 
         <label>Date:</label>
-        <input
-          type="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          required
-        />
-
-        {/* <label>Transaction Type:</label>
-        <select
-          name="transaction_type"
-          value={formData.transaction_type}
-          onChange={handleChange}
-        >
-          <option value="expense">Expense</option>
-          <option value="income">Income</option>
-        </select> */}
+        <input type="date" name="date" value={formData.date} onChange={handleChange} required />
 
         <div className="form-actions">
-          <button type="submit">Save Transaction</button>
+          <button type="submit">Save Expense</button>
           <button type="button" onClick={onClose} className="cancel-btn">
             Cancel
           </button>

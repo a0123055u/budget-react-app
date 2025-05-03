@@ -17,7 +17,7 @@ function IncomeForm({ onClose }) {
   useEffect(() => {
     // Fetch categories using axiosInstance
     axiosInstance
-      .get("http://localhost:8000/budget/api/v1/income/expense/category/?category_type=income", {
+      .get("http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/budget/api/v1/income/expense/category/?category_type=income", {
         headers: {
           "Authorization": `Bearer ${authToken}`, // Use the authToken from context
         },
@@ -49,7 +49,7 @@ function IncomeForm({ onClose }) {
 
     // API call to save income transaction using axiosInstance
     axiosInstance
-      .post("http://localhost:8000/budget/api/v1/transaction/user/", formData, {
+      .post("http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/budget/api/v1/transaction/user/", formData, {
         headers: {
           "Authorization": `Bearer ${authToken}`, // Use the authToken from context
           "Content-Type": "application/json",

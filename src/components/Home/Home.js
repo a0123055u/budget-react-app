@@ -27,7 +27,7 @@ function Home() {
   
 
   useEffect(() => {
-    fetch("http://localhost:8000/budget/api/v1/balance/", {
+    fetch("http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/budget/api/v1/balance/", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -71,7 +71,7 @@ const handleLogout = () => {
   formData.append('token', token);
   formData.append('client_id', AUTH.APP_CLIENT_ID);
 
-  axios.post('http://localhost:8000/o/revoke_token/', formData, {
+  axios.post('http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/o/revoke_token/', formData, {
       headers: {
           "Content-Type": "application/x-www-form-urlencoded"
       }
