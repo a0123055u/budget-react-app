@@ -28,7 +28,7 @@ const Signup = () => {
 
     try {
       const response = await fetch(
-        "http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/budget/api/v1/register/user/",
+        "https://app.happybudget.net/budget/api/v1/register/user/",
         {
           method: "POST",
           body: form,

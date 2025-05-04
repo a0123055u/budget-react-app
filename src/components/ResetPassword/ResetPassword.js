@@ -16,7 +16,7 @@ const ResetPassword = () => {
 
     try {
       const response = await fetch(
-        `http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/budget/api/v1/reset/password/user/${token}`,
+        `https://app.happybudget.net/budget/api/v1/reset/password/user/${token}`,
         {
           method: "POST",
           body: formData,

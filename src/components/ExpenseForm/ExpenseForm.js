@@ -17,7 +17,7 @@ function ExpenseForm({ onClose }) {
   // Fetch categories using axiosInstance
   useEffect(() => {
     axiosInstance
-      .get("http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/budget/api/v1/income/expense/category/?category_type=expense", {
+      .get("https://app.happybudget.net/budget/api/v1/income/expense/category/?category_type=expense", {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -48,7 +48,7 @@ function ExpenseForm({ onClose }) {
     console.log("Submitted Data:", formData);
 
     axiosInstance
-      .post("http://budgetappalb-1330964985.ap-southeast-1.elb.amazonaws.com:8000/budget/api/v1/transaction/user/", formData, {
+      .post("https://app.happybudget.net/budget/api/v1/transaction/user/", formData, {
         headers: {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
