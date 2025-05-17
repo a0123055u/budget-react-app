@@ -128,31 +128,36 @@ const handleLogout = () => {
 
       {!showTransactionForm && !showIncomeForm && !showExpenseForm&& (
       <div className="transaction-summary">
-      <h2>Recent Transactions</h2>
-      <div className="transaction-table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Description</th>
-              <th>Amount</th>
+      <h2>Current Month Transactions</h2>
+      <div className="transaction-table mt-3">
+  <div className="table-scroll-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {[...Array(1)].flatMap(() => 
+          transactions.map((transaction, index) => (
+            <tr key={`${transaction.date}-${index}`}>
+              <td>{new Date(transaction.date).toLocaleDateString()}</td>
+              <td>{transaction.description}</td>
+              <td>
+                {transaction.transaction_type === 'expense'
+                  ? `-${Math.abs(parseFloat(transaction.amount))}`
+                  : parseFloat(transaction.amount)}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {transactions.map((transaction, index) => (
-              <tr key={index}>
-                <td>{new Date(transaction.date).toLocaleDateString()}</td>
-                <td>{transaction.description}</td>
-                <td>
-                  {transaction.transaction_type === 'expense'
-                    ? `-${Math.abs(parseFloat(transaction.amount))}`
-                    : parseFloat(transaction.amount)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>
+
     </div>    
      
       )}
