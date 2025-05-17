@@ -203,3 +203,23 @@
     padding: 6px; /* Reduced padding for smaller screens */
   }
 }
+
+
+.transaction-table-wrapper {
+  max-height: 300px; /* Adjust height as needed */
+  overflow-y: auto;
+}
+
+.transaction-table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 400px; /* Prevents layout break on small screens */
+}
+
+.transaction-table-wrapper thead th {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
+  border-bottom: 1px solid #ccc;
+}
