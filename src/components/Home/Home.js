@@ -127,27 +127,34 @@ const handleLogout = () => {
       {showIncomeForm && <IncomeForm onClose={() => setShowIncomeForm(false)} />}
 
       {!showTransactionForm && !showIncomeForm && !showExpenseForm&& (
-        <div className="transaction-summary">
-          <h2>Recent Transactions</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Amount</th>
+      <div className="transaction-summary">
+      <h2>Recent Transactions</h2>
+      <div className="transaction-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map((transaction, index) => (
+              <tr key={index}>
+                <td>{new Date(transaction.date).toLocaleDateString()}</td>
+                <td>{transaction.description}</td>
+                <td>
+                  {transaction.transaction_type === 'expense'
+                    ? `-${Math.abs(parseFloat(transaction.amount))}`
+                    : parseFloat(transaction.amount)}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {transactions.map((transaction, index) => (
-                <tr key={index}>
-                  <td>{new Date(transaction.date).toLocaleDateString()}</td>
-                  <td>{transaction.description}</td>
-                  <td>{transaction.transaction_type === 'expense' ? `-${Math.abs(parseFloat(transaction.amount))}` : parseFloat(transaction.amount)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>    
+     
       )}
 
       {showTransactionForm && <TransactionForm onClose={() => setShowTransactionForm(false)} />}
